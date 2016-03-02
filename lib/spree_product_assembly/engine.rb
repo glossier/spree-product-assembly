@@ -10,6 +10,8 @@ module SpreeProductAssembly
       end
     end
 
+    config.assets.precompile += %w( spinner.gif )
+
     config.to_prepare &method(:activate).to_proc
   end
 end
