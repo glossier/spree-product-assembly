@@ -4,6 +4,18 @@ module Spree
 
     has_many :part_line_items, dependent: :destroy
 
+    def selected_parts=(parts)
+      return unless parts.present?
+      selected_parts = parts.split(",").map(&:to_i)
+      selected_parts.each do |variant|
+        part_line_item = self.part_line_items.find_or_initialize_by(
+          line_item: self,
+          variant_id: variant,
+          quantity: 1
+        )
+      end
+    end
+
     def any_units_shipped?
       inventory_units.any? { |unit| unit.shipped? }
     end
