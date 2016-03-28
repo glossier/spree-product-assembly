@@ -11,6 +11,9 @@ $(document).ready(function () {
         })
         $('#stock_details').html(variantLineItemTemplate({variant: variant}));
         $('#stock_details').show();
+        if(variant.sku == 'PHASE2') {
+          $('#available_parts_table').show();
+        };
 
         $('button.add_variant').click(addVariant);
 
@@ -27,6 +30,7 @@ $(document).ready(function () {
 
 addVariant = function() {
     $('#stock_details').hide();
+    $('#available_parts_table').hide();
 
     var variant_id = $('input.variant_autocomplete').val();
     var quantity = $("input.quantity[data-variant-id='" + variant_id + "']").val();
