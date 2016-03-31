@@ -1,21 +1,24 @@
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_product_assembly'
-  s.version     = '2.4.0.beta'
-  s.summary     = 'Adds oportunity to make bundle of products to your Spree store'
+  s.version     = '1.0'
+  s.summary     = 'Adds oportunity to make bundle of products to your Solidus Store'
   s.description = s.summary
   s.required_ruby_version = '>= 1.9.3'
 
   s.author            = 'Roman Smirnov'
   s.email             = 'POMAHC@gmail.com'
-  s.homepage          = 'https://github.com/spree-contrib/spree-product-assembly'
+  s.homepage          = 'https://github.com/glossier/spree-product-assembly'
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- spec/*`.split("\n")
-  s.require_path = 'lib'
-  s.requirements << 'none'
+  s.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  s.bindir        = "exe"
+  s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  s.require_paths = ["lib"]
 
-  s.add_dependency 'spree_backend', '~> 2.4.0'
+  s.add_dependency "solidus", [">= 1.0.0", "< 2"]
 
   s.add_development_dependency 'active_model_serializers', '0.9.0.alpha1'
   s.add_development_dependency 'rspec-rails', '~> 3.3.0'
