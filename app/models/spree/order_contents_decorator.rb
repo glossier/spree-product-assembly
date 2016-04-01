@@ -2,17 +2,22 @@ module Spree
   OrderContents.class_eval do
 
     def add_to_line_item(variant, quantity, options = {})
-    line_item = grab_line_item_by_variant(variant, false, options)
+      line_item = grab_line_item_by_variant(variant, false, options)
 
-    if line_item && part_variants_match?(line_item, variant, quantity, options)
-      line_item.quantity += quantity.to_i
-      line_item.currency = currency unless currency.nil?
-    else
-      opts = { currency: order.currency }.merge ActionController::Parameters.new(options).
-                                          permit(Spree::PermittedAttributes.line_item_attributes)
-      line_item = order.line_items.new(quantity: quantity,
-                                        variant: variant,
-                                        options: opts)
+      if line_item && part_variants_match?(line_item, variant, quantity, options)
+        line_item.quantity += quantity.to_i
+        line_item.currency = currency unless currency.nil?
+      else
+        opts = { currency: order.currency }.merge ActionController::Parameters.new(options).
+                                            permit(Spree::PermittedAttributes.line_item_attributes)
+        line_item = order.line_items.new(quantity: quantity,
+                                          variant: variant,
+                                          options: opts)
+      end
+
+      line_item.target_shipment = options[:shipment] if options.has_key? :shipment
+      line_item.save!
+      line_item
     end
 
     def add_to_line_item_with_parts(variant, quantity, options = {})
@@ -46,24 +51,25 @@ module Spree
     end
 
     def populate_part_line_items(line_item, parts, selected_variants)
-      return if selected_variants.nil?
-      selected_variants.each do |variant|
-        part_line_item = line_item.part_line_items.find_or_initialize_by(
-          line_item: line_item,
-          variant_id: variant
-        )
+      return if parts.nil?
+      if selected_variants.nil?
+        parts.each do |part|
+          part_line_item = line_item.part_line_items.find_or_initialize_by(
+            line_item: line_item,
+            variant_id: variant_id_for(part, selected_variants)
+          )
 
-        part_line_item.update_attributes!(quantity: 1)
-      end
-    end
-    def populate_part_line_items(line_item, parts, selected_variants)
-      parts.each do |part|
-        part_line_item = line_item.part_line_items.find_or_initialize_by(
-          line_item: line_item,
-          variant_id: variant_id_for(part, selected_variants)
-        )
+          part_line_item.update_attributes!(quantity: part.count)
+        end
+      else
+        selected_variants.each do |variant|
+          part_line_item = line_item.part_line_items.find_or_initialize_by(
+            line_item: line_item,
+            variant_id: variant
+          )
 
-        part_line_item.update_attributes!(quantity: part.count)
+          part_line_item.update_attributes!(quantity: 1)
+        end
       end
     end
 

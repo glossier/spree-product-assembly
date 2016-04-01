@@ -21,6 +21,7 @@ require "database_cleaner"
 require "ffaker"
 
 require "spree/testing_support/factories"
+require 'spree/testing_support/authorization_helpers'
 require 'factory_girl'
 
 FactoryGirl.find_definitions

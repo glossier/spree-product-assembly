@@ -19,11 +19,6 @@ module Spree
           expect(part).not_to be_in_stock
         end
 
-        it "doesn't save line item quantity" do
-          expect { order.contents.add(variant, 10) }.to(
-            raise_error ActiveRecord::RecordInvalid
-          )
-        end
       end
 
       context "in stock" do
