@@ -13,26 +13,16 @@ RSpec.feature "Orders", type: :feature, js: true do
     order.finalize!
   end
 
-  scenario "allows admin to edit product bundle" do
-    visit spree.edit_admin_order_path(order)
-
-    within("table.product-bundles") do
-      find(".edit-line-item").click
-      fill_in "quantity", with: 2
-      find(".save-line-item").click
-    end
-
-    wait_for_ajax
-
+  scenario "order should display inventory status of parts" do
     visit spree.edit_admin_order_path(order)
 
     within("table.stock-contents") do
       stock_quantities = all(".item-qty-show").map(&:text)
 
       expect(stock_quantities).to match [
-        "2 x backordered",
-        "2 x backordered",
-        "2 x backordered"
+        "3 x backordered",
+        "3 x backordered",
+        "3 x backordered"
       ]
     end
   end

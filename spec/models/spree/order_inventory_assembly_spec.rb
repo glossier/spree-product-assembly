@@ -193,7 +193,7 @@ module Spree
 
               expect(shipment.inventory_units_for(variants[0]).count).to eq 1
               expect(shipment.inventory_units_for(variants[1]).count).to eq 1
-              expect(shipment.inventory_units_for(variants[2]).count).to eq 3
+              expect(shipment.inventory_units_for(variants[2]).count).to eq 1
             end
           end
 
@@ -212,14 +212,14 @@ module Spree
 
               expect(shipment.inventory_units_for(variants[0]).count).to eq 1
               expect(shipment.inventory_units_for(variants[1]).count).to eq 1
-              expect(shipment.inventory_units_for(variants[2]).count).to eq 3
+              expect(shipment.inventory_units_for(variants[2]).count).to eq 1
 
               line_item.update_column(:quantity, 2)
               inventory.verify(shipment)
 
-              expect(shipment.inventory_units_for(variants[0]).count).to eq 2
-              expect(shipment.inventory_units_for(variants[1]).count).to eq 2
-              expect(shipment.inventory_units_for(variants[2]).count).to eq 6
+              expect(shipment.inventory_units_for(variants[0]).count).to eq 1
+              expect(shipment.inventory_units_for(variants[1]).count).to eq 1
+              expect(shipment.inventory_units_for(variants[2]).count).to eq 2
             end
           end
 
@@ -239,14 +239,14 @@ module Spree
 
               expect(shipment.inventory_units_for(variants[0]).count).to eq 2
               expect(shipment.inventory_units_for(variants[1]).count).to eq 2
-              expect(shipment.inventory_units_for(variants[2]).count).to eq 6
+              expect(shipment.inventory_units_for(variants[2]).count).to eq 2
 
               line_item.update_column(:quantity, 1)
               inventory.verify(shipment)
 
-              expect(shipment.inventory_units_for(variants[0]).count).to eq 1
-              expect(shipment.inventory_units_for(variants[1]).count).to eq 1
-              expect(shipment.inventory_units_for(variants[2]).count).to eq 3
+              expect(shipment.inventory_units_for(variants[0]).count).to eq 2
+              expect(shipment.inventory_units_for(variants[1]).count).to eq 2
+              expect(shipment.inventory_units_for(variants[2]).count).to eq 1
             end
           end
         end
@@ -256,7 +256,7 @@ module Spree
     def create_line_item_for_bundle(args)
       parts = args.fetch(:parts)
       line_item_quantity = args.fetch(:line_item_quantity, 1)
-      order = create(:order, completed_at: Time.now)
+      order = create(:order, completed_at: Time.now, currency: 'USD')
       shipment = create(:shipment, order: order)
       bundle = create(:product, name: "Bundle")
 
@@ -296,9 +296,7 @@ module Spree
 
         if part[:variant_selection_deferred]
           selected_variants = {
-            "selected_variants" => {
-              "#{bundle.master.parts_variants.last.part_id}" => "#{variants.last.id}"
-            }
+            selected_variants:  [variants.last.id]
           }
         end
       end

@@ -61,10 +61,7 @@ describe Spree::OrderContents, type: :model do
         contents = Spree::OrderContents.new(order)
 
         line_item = contents.add_to_line_item_with_parts(assembly.master, 1, {
-          "selected_variants" => {
-            "#{assembly_part_keychain.part_id}" => "#{keychain.master.id}",
-            "#{assembly_part_shirt.part_id}" => "#{shirt.variants.last.id}"
-          }
+          selected_variants: [keychain.master.id, shirt.variants.last.id]
         })
 
         part_line_items = line_item.part_line_items

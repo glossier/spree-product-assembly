@@ -8,6 +8,7 @@ module Spree
       let(:contents) { OrderContents.new(order) }
       let(:guitar) { create(:variant) }
       let(:bass) { create(:variant) }
+      let!(:store) { create(:store) }
 
       let(:bundle) { create(:product) }
 

@@ -15,8 +15,7 @@ module Spree
 
           it "calculates items quantity properly" do
             expected_units_on_package = order.line_items.to_a.sum(&:quantity) - bundle_item_quantity + (bundle.parts.count * bundle_item_quantity)
-
-            expect(subject.packages.sum(&:quantity)).to eq expected_units_on_package
+            expect(subject.inventory_units.count).to eq expected_units_on_package
           end
         end
       end
@@ -36,7 +35,7 @@ module Spree
 
         specify do
           expected_units_on_package = order.line_items.to_a.sum(&:quantity) - bundle_item_quantity + (bundle.parts.count * bundle_item_quantity)
-          expect(subject.packages.sum(&:quantity)).to eq expected_units_on_package
+          expect(subject.inventory_units.count).to eq expected_units_on_package
         end
       end
     end
