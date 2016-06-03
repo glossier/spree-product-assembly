@@ -28,7 +28,7 @@
           <% end %>
         </td>
         <% unless product.has_variants? %>
-          <td><%= hidden_field_tag "part[assembly_id]", product.master.id, class: 'parts-assembly' %>Master</td>
+          <td><%= hidden_field_tag "part[assembly_id]", product.id, class: 'parts-assembly' %>Master</td>
         <% else %>
           <td><%= select_tag "part[assembly_id]", options_from_collection_for_select(product.variants, "id", "options_text") %></td>
         <% end %>
