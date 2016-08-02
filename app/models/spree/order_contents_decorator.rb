@@ -76,6 +76,18 @@ module Spree
 
           part_line_item.update_attributes!(quantity: 1)
         end
+        add_mandatory_parts(parts, line_item)
+      end
+    end
+    
+    def add_mandatory_parts(parts, line_item)
+      parts.where('variant_selection_deferred IS NULL').each do |part|
+        part_line_item = line_item.part_line_items.find_or_initialize_by(
+          line_item: line_item,
+          variant_id: variant_id_for(part, nil)
+        )
+
+        part_line_item.update_attributes!(quantity: part.count)
       end
     end
 
