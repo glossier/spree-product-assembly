@@ -34,6 +34,14 @@ Spree::Product.class_eval do
     errors.add(:can_be_part, Spree.t(:assembly_cannot_be_part)) if can_be_part?
   end
 
+  def required_part_count
+    has_parts? ? parts.count : 0
+  end
+
+  def has_parts?
+    parts.present?
+  end
+
   private
   def assemblies_part(variant)
     Spree::AssembliesPart.get(self.id, variant.id)
