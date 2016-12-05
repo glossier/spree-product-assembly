@@ -42,6 +42,11 @@ Spree::Product.class_eval do
     parts.present?
   end
 
+  # To-Do: Clean this up
+  def phase_one_lite?
+    sku == 'GPSL'
+  end
+
   private
   def assemblies_part(variant)
     Spree::AssembliesPart.get(self.id, variant.id)
