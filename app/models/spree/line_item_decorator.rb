@@ -27,6 +27,10 @@ module Spree
       product.parts
     end
 
+    def has_parts?
+      parts.present?
+    end
+
     # The number of the specified variant that make up this LineItem. By
     # default, calls `product#count_of`, but provided as a hook if you want to
     # override and customize the parts available for a specific LineItem. Note
