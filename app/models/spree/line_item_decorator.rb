@@ -31,6 +31,10 @@ module Spree
       parts.present?
     end
 
+    def insufficient_parts_selected?
+      has_parts? && part_line_items.count != product.required_part_count
+    end
+
     # The number of the specified variant that make up this LineItem. By
     # default, calls `product#count_of`, but provided as a hook if you want to
     # override and customize the parts available for a specific LineItem. Note
