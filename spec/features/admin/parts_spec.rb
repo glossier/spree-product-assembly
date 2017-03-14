@@ -82,7 +82,7 @@ RSpec.feature "Managing parts for a product bundle", type: :feature, js: true do
         click_on "Search"
 
         within("#search_hits") do
-          select "Color: Red", from: "part_id"
+          select part.sku, from: "part_id"
           click_on "Select"
         end
 
