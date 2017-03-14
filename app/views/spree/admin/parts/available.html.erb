@@ -15,7 +15,7 @@
         class="<%= "with-variants" if part.has_variants? %>">
 
         <td><%= part.name %></td>
-        <td>
+        <td data-hook="admin_parts_sku_select">
           <% if part.has_variants? %>
             <%- opts = part.variants.map {|v| [v.sku, v.id] } %>
             <%= select_tag "part[id]",
