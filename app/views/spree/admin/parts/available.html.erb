@@ -12,10 +12,11 @@
   <tbody>
     <% @available_products.each do |part| %>
       <tr id="<%= dom_id(part) %>"
+        data-hook="admin_parts_available_sku_table"
         class="<%= "with-variants" if part.has_variants? %>">
 
         <td><%= part.name %></td>
-        <td data-hook="admin_parts_sku_select">
+        <td>
           <% if part.has_variants? %>
             <%- opts = part.variants.map {|v| [v.sku, v.id] } %>
             <%= select_tag "part[id]",
