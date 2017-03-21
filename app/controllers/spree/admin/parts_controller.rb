@@ -3,6 +3,7 @@ class Spree::Admin::PartsController < Spree::Admin::BaseController
 
   def index
     @parts = product.assemblies_parts.includes(:assembly, :part)
+    @parts = product.variants.flat_map(&:parts_variants) if @parts.empty?
   end
 
   def remove
