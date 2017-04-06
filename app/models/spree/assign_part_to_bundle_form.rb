@@ -36,7 +36,7 @@ module Spree
     end
 
     def assembly
-      Spree::Product.find_by(id: part_options[:assembly_id])
+      Spree::Variant.find_by(id: part_options[:assembly_id])
     end
 
     def part

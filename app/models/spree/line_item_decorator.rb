@@ -32,7 +32,7 @@ module Spree
     end
 
     def insufficient_parts_selected?
-      has_parts? && part_line_items.count != product.required_part_count
+      has_parts? && part_line_items.count != product_or_variant_parts
     end
 
     # The number of the specified variant that make up this LineItem. By
@@ -46,7 +46,7 @@ module Spree
     end
 
     def quantity_by_variant
-      if product.assembly?
+      if has_parts?
         if part_line_items.any?
           quantity_with_part_line_items(quantity)
         else
@@ -58,6 +58,10 @@ module Spree
     end
 
     private
+
+    def product_or_variant_parts
+      product.required_part_count > 0 ? product.required_part_count : variant.parts.count
+    end
 
     def update_inventory
       if (changed? || target_shipment.present?) &&
