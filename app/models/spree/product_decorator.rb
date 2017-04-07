@@ -21,7 +21,7 @@ Spree::Product.class_eval do
   end
 
   def assembly?
-    parts.present?
+    variants.any? { |v| v.parts.present? }
   end
 
   def count_of(variant)
