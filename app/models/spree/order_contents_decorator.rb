@@ -31,7 +31,7 @@ module Spree
         tap do |line_item|
         populate_part_line_items(
           line_item,
-          variant.product.assemblies_parts,
+          variant.parts_variants,
           options[:selected_variants]
         )
       end
