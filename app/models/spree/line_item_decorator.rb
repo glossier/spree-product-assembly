@@ -60,7 +60,7 @@ module Spree
     private
 
     def product_or_variant_parts
-      product.required_part_count > 0 ? product.required_part_count : variant.parts.count
+      product.required_part_count > 0 ? product.required_part_count : variant.parts_variants.sum(:count)
     end
 
     def update_inventory
