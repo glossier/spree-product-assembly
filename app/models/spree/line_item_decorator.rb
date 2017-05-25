@@ -75,8 +75,9 @@ module Spree
     end
 
     def quantity_with_part_line_items(quantity)
-      part_line_items.each_with_object({}) do |ap, hash|
-        hash[ap.variant] = ap.quantity * quantity
+      part_line_items.group_by(&:variant_id).each_with_object({}) do |ap, hash|
+        variant = Spree::Variant.find(ap.first)
+        hash[variant] = ap.last.count * quantity
       end
     end
 
